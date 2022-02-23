@@ -4,32 +4,16 @@ from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
 
 
-class AOTY(object):
+class User(object):
 
-    def __init__(self):
-        pass
-
-    def info(self):
-        #requests.post('https://www.albumoftheyear.org()')
-        #scraper = cfscrape.create_scraper()
-        req = Request('https://www.albumoftheyear.org/album/435719-beach-house-once-twice-melody.php', headers={'User-Agent': 'Mozilla/6.0'})
-        page = urlopen(req).read() 
-        #print(page)
-        #path = 'https://www.albumoftheyear.org/user/{}'.format(self.user)+'/ratings'
-        #page = self.session.get(path)
-        #return {'user' : self.user}
-        soup = BeautifulSoup(page, 'html.parser')
-        print(soup.prettify())
-        return soup
-
-    #def getArtist(self, artistName):
-
-    def getUser(self, user):
+    def __init__(self, user):
         req = Request('https://www.albumoftheyear.org/user/{}'.format(user), headers={'User-Agent': 'Mozilla/6.0'})
         page = urlopen(req).read()
         soup = BeautifulSoup(page, 'html.parser')
-        
         return soup
+
+    #def getUser(self, user):
+        
 
     def getUserRatings(self, user, soup):
         obj = soup.find(href='/user/{}'.format(user)+'/ratings/')
