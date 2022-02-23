@@ -1,5 +1,5 @@
 
-from wrapper import AOTY
+from wrapper import User
 
 def test_info():
     """Tests an API call to get a users info"""
@@ -32,11 +32,10 @@ def test_getUserAbout():
     print(response)
 
 if __name__ == "__main__":
-    test_instance = AOTY()
-    #test_info()
     user = 'doublez'
+    test_instance = User(user)
     soup = test_getUser(user)
-    
+
     test_getUserRatings()
     test_getUserReviews()
     test_getUserLists()
