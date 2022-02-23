@@ -1,0 +1,44 @@
+
+from wrapper import AOTY
+
+def test_info():
+    """Tests an API call to get a users info"""
+
+    response = test_instance.info()
+    #assert response['user'] == 'Kanye', "The ID should be in the response"
+
+def test_getUser(user):
+    response = test_instance.getUser(user)
+    return response
+
+def test_getUserRatings():
+    response = test_instance.getUserRatings(user, soup)
+    print(response)
+
+def test_getUserReviews():
+    response = test_instance.getUserReviews(user, soup)
+    print(response)
+
+def test_getUserLists():
+    response = test_instance.getUserLists(user, soup)
+    print(response)
+
+def test_getUserFollowers():
+    response = test_instance.getUserFollowers(user, soup)
+    print(response)
+
+def test_getUserAbout():
+    response = test_instance.getUserAbout(user, soup)
+    print(response)
+
+if __name__ == "__main__":
+    test_instance = AOTY()
+    #test_info()
+    user = 'doublez'
+    soup = test_getUser(user)
+    
+    test_getUserRatings()
+    test_getUserReviews()
+    test_getUserLists()
+    test_getUserFollowers()
+    test_getUserAbout()
