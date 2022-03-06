@@ -13,10 +13,9 @@ def test_user_page(username):
     pytest.user = User(username)
     assert pytest.user != null
 
-@pytest.mark.first
 def test_get_user_ratings():
     user_ratings = pytest.user.get_user_ratings()
-    assert user_ratings == '{"ratings" : "5,570"}'
+    assert user_ratings == '{"ratings": "5,570"}'
 
 def test_get_user_reviews():
     user_reviews = pytest.user.get_user_reviews()
