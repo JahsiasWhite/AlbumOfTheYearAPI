@@ -1,43 +1,49 @@
 
+from sqlalchemy import null
 from wrapper import User
+import pytest
 
-def test_info():
-    """Tests an API call to get a users info"""
 
-    response = test_instance.info()
-    #assert response['user'] == 'Kanye', "The ID should be in the response"
+@pytest.fixture
+def username():
+    return 'doublez'
 
-def test_getUserPage(user):
-    response = test_instance.getUserPage(user)
-    return response
+@pytest.mark.first
+def test_user_page(username):
+    pytest.user = User(username)
+    assert pytest.user != null
 
-def test_getUserRatings():
-    response = test_instance.getUserRatings(user, soup)
-    print(response)
+@pytest.mark.first
+def test_get_user_ratings():
+    user_ratings = pytest.user.get_user_ratings()
+    assert user_ratings == '{"ratings" : "5,570"}'
 
-def test_getUserReviews():
-    response = test_instance.getUserReviews(user, soup)
-    print(response)
+def test_get_user_reviews():
+    user_reviews = pytest.user.get_user_reviews()
+    assert user_reviews == '{"reviews": "709"}'
 
-def test_getUserLists():
-    response = test_instance.getUserLists(user, soup)
-    print(response)
+def test_get_user_lists():
+    user_lists = pytest.user.get_user_lists()
+    assert user_lists == '{"lists": "7"}'
 
-def test_getUserFollowers():
-    response = test_instance.getUserFollowers(user, soup)
-    print(response)
+def test_get_user_followers():
+    user_followers = pytest.user.get_user_followers()
+    assert user_followers == '{"followers": "2,306"}'
 
-def test_getUserAbout():
-    response = test_instance.getUserAbout(user, soup)
-    print(response)
+def test_get_user_about():
+    user_about = pytest.user.get_user_about()
+    print(user_about)
 
 if __name__ == "__main__":
-    user = 'doublez'
-    test_instance = User()
-    soup = test_getUserPage(user)
+    #user = 'doublez'
+    #test_instance = User()
+    #soup = test_get_user_page(user)
 
-    test_getUserRatings()
-    test_getUserReviews()
-    test_getUserLists()
-    test_getUserFollowers()
-    test_getUserAbout()
+    user = User('doublez')
+    print( user.get_user_ratings() )
+    print( user.get_user_reviews() )
+    print( user.get_user_lists() )
+    print( user.get_user_followers() )
+    print( user.get_user_about() )
+
+    pytest.main
