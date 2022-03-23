@@ -1,6 +1,6 @@
 from sqlalchemy import null
 import pytest
-from Client.client import Client
+from albumoftheyearAPI import AOTY
 
 @pytest.fixture
 def artist():
@@ -8,7 +8,7 @@ def artist():
 
 @pytest.mark.first
 def test_initialize():
-    c = Client()
+    c = AOTY()
     pytest.client = c
     assert pytest.client != null
 
@@ -25,8 +25,8 @@ def test_get_artist__albums_json(artist):
 if __name__ == "__main__":
     
     artist = '183-kanye-west'
-    AlbumWrapper = Client()
+    AlbumWrapper = AOTY()
 
     print( AlbumWrapper.artist_albums(artist) )
-    
+
     pytest.main

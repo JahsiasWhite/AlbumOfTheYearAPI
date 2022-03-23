@@ -1,6 +1,6 @@
 from sqlalchemy import null
 import pytest
-from Client.client import Client
+from albumoftheyearAPI import AOTY
 
 @pytest.fixture
 def user():
@@ -8,7 +8,7 @@ def user():
 
 @pytest.mark.first
 def test_initialize():
-    c = Client()
+    c = AOTY()
     pytest.client = c
     assert pytest.client != null
 
@@ -63,7 +63,7 @@ def test_get_rating_distribtion_json(user):
 if __name__ == "__main__":
     
     user = 'doublez'
-    AlbumWrapper = Client()
+    AlbumWrapper = AOTY()
 
     print( AlbumWrapper.user_ratings(user) )
     print( AlbumWrapper.user_reviews(user) )
