@@ -1,6 +1,6 @@
 from sqlalchemy import null
 import pytest
-from albumoftheyearAPI import AOTY
+from albumoftheyearapi import AOTY
 
 @pytest.fixture
 def user():

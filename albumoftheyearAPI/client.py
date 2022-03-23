@@ -1,6 +1,6 @@
 
-from albumoftheyearAPI.user import UserMethods
-from albumoftheyearAPI.artist import ArtistMethods
+from albumoftheyearapi.user import UserMethods
+from albumoftheyearapi.artist import ArtistMethods
 
 class AOTY(UserMethods, ArtistMethods):
     

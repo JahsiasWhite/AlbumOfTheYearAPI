@@ -5,7 +5,7 @@ import json
 class UserMethods():
 
     def __init__(self):
-        self = self
+        self.user = ''
 
     def __set_user_page(self, user):
         print( 'Making a request' )
