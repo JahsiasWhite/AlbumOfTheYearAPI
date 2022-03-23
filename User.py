@@ -4,103 +4,132 @@ from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
 import json
 
-from sqlalchemy import null
 
 
-class User(object):
+class UserMethods():
 
-    def __init__(self, username):
-        """
-        Gets the HTML page of a given user and sets basic user values
+    def __init__(self):
+        self = self
 
-        """
-
-        self.username = username
-        req = Request('https://www.albumoftheyear.org/user/{}'.format(username), headers={'User-Agent': 'Mozilla/6.0'})
-        ugly_user_page = urlopen(req).read()
+    def __set_user_page(self, user):
+        print( 'Making a request' )
+        self.user = user
+        self.url = 'https://www.albumoftheyear.org/user/{}'.format(user)
+        self.req = Request(self.url, headers={'User-Agent': 'Mozilla/6.0'})
+        ugly_user_page = urlopen(self.req).read()
         self.user_page = BeautifulSoup(ugly_user_page, 'html.parser')
 
-        self.set_ratings()
-        self.set_reviews()
-        self.set_lists()
-        self.set_followers()
-        self.set_about()
-        self.set_rating_distribution()
-
-    def set_ratings(self):
-        ratings_section = self.user_page.find(href='/user/{}'.format(self.username)+'/ratings/')
+    def __get_user_ratings(self, user):
+        if self.user != user:
+            self.__set_user_page(user)
+          
+        ratings_section = self.user_page.find(href='/user/{}'.format(self.user)+'/ratings/')
         ratings =  ratings_section.find(class_='profileStat').getText()
-        self.ratings = ratings
+        return ratings
 
-    def get_ratings(self):
-        return self.ratings
+    def user_ratings(self, user):
+        return self.__get_user_ratings(user)
 
-    def get_ratings_json(self):
+    def user_ratings_json(self, user):
         ratings_JSON = {
-            "ratings": self.ratings
+            "ratings": self.__get_user_ratings(user)
         }
         return json.dumps(ratings_JSON)
 
-    def set_reviews(self):
-        reviews_section = self.user_page.find(href='/user/{}'.format(self.username)+'/reviews/')
-        reviews =  reviews_section.find(class_='profileStat').getText()
-        self.reviews = reviews
+    def __get_user_reviews(self, user):
+        if self.user != user:
+            self.__set_user_page(user)
 
-    def get_reviews(self):
-        return self.reviews
+        reviews_section = self.user_page.find(href='/user/{}'.format(self.user)+'/reviews/')
+        reviews =  reviews_section.find(class_='profileStat').getText()
+        return reviews
+
+    def user_reviews(self, user):
+        return self.__get_user_ratings(user)
     
-    def get_reviews_JSON(self):
+    def get_reviews_json(self, user):
         reviews_JSON = {
-            "reviews": self.reviews
+            "reviews": self.__get_user_reviews(user)
         }
         return json.dumps(reviews_JSON)
 
-    def set_lists(self):
-        lists_section = self.user_page.find(href='/user/{}'.format(self.username)+'/lists/')
+    def __get_user_lists(self, user):
+        if self.user != user:
+            self.__set_user_page(user)
+
+        lists_section = self.user_page.find(href='/user/{}'.format(self.user)+'/lists/')
         lists =  lists_section.find(class_='profileStat').getText()
-        self.lists = lists
+        return lists
 
-    def get_lists(self):
-        return self.lists
+    def user_lists(self, user):
+        return self.__get_user_lists(user)
 
-    def get_lists_JSON(self):
+    def user_lists_json(self, user):
         lists_JSON = {
-            "lists": self.lists
+            "lists": self.__get_user_lists(user)
         }
         return json.dumps(lists_JSON)
 
-    def set_followers(self):
-        followers_section = self.user_page.find(href='/user/{}'.format(self.username)+'/followers/')
+    def __get_user_followers(self, user):
+        if self.user != user:
+            self.__set_user_page(user)
+
+        followers_section = self.user_page.find(href='/user/{}'.format(self.user)+'/followers/')
         followers =  followers_section.find(class_='profileStat').getText()
-        self.followers = followers
+        return followers
 
-    def get_followers(self):
-        return self.followers
+    def user_followers(self, user):
+        return self.__get_user_followers(user)
 
-    def get_followers_JSON(self):
+    def user_followers_json(self, user):
         followers_JSON = {
-            "followers": self.followers
+            "followers": self.__get_user_followers(user)
         }
         return json.dumps(followers_JSON)
 
-    def set_about(self):
-        about =  self.user_page.find(class_='aboutUser').getText()
-        self.about = about
+    def __get_user_about(self, user):
+        if self.user != user:
+            self.__set_user_page(user)
 
-    def get_about(self):
-        return self.about
+        about = self.user_page.find(class_='aboutUser').getText()
+        return about
 
-    def get_about(self):
+    def user_about(self, user):
+        return self.__get_user_about(user)
+
+    def user_about_json(self, user):
         about_JSON = {
-            "about_user": self.about
+            "about_user": self.__get_user_about(user)
         }
         return json.dumps(about_JSON)
 
-    def get_rating_distribtion(self):
-        return self.rating_distribution
+    def __get_user_rating_distribution(self, user):
+        if self.user != user:
+            self.__set_user_page(user)
 
-    def get_rating_distribtion(self):
-        user_rating_distribution = self.rating_distribution
+        user_rating_distribution_tags = self.user_page.findAll(class_='distRow')
+
+        user_rating_distribution = []
+        for i in range(11):
+            rating = user_rating_distribution_tags[i].getText().encode('ascii', 'ignore').decode()
+            if i == 0 or i == 10:
+                rating = rating[3:]
+                if rating == '':
+                    rating = 0
+                user_rating_distribution.append(rating)
+            else:
+                rating = rating[5:]
+                if rating == '':
+                    rating = 0
+                user_rating_distribution.append(rating)
+        
+        return user_rating_distribution
+
+    def user_rating_distribtion(self, user):
+        return self.__get_user_rating_distribution(user)
+
+    def user_rating_distribtion_json(self, user):
+        user_rating_distribution = self.__get_user_rating_distribution(user)
 
         for i in range(10):
             if (i == 0 or i == 10) and user_rating_distribution[i][3:] == "":
@@ -121,23 +150,5 @@ class User(object):
             "10-19" : user_rating_distribution[9][5:],
             "0-9"   : user_rating_distribution[10][3:]
         }
+
         return json.dumps(user_rating_distribution_JSON)
-
-    def set_rating_distribution(self):
-        user_rating_distribution_tags = self.user_page.findAll(class_='distRow')
-        print(user_rating_distribution_tags[0])
-
-        user_rating_distribution = []
-        user_rating_distribution.append(user_rating_distribution_tags[0].getText().encode('ascii', 'ignore').decode())
-        user_rating_distribution.append(user_rating_distribution_tags[1].getText().encode('ascii', 'ignore').decode())
-        user_rating_distribution.append(user_rating_distribution_tags[2].getText().encode('ascii', 'ignore').decode())
-        user_rating_distribution.append(user_rating_distribution_tags[3].getText().encode('ascii', 'ignore').decode())
-        user_rating_distribution.append(user_rating_distribution_tags[4].getText().encode('ascii', 'ignore').decode())
-        user_rating_distribution.append(user_rating_distribution_tags[5].getText().encode('ascii', 'ignore').decode())
-        user_rating_distribution.append(user_rating_distribution_tags[6].getText().encode('ascii', 'ignore').decode())
-        user_rating_distribution.append(user_rating_distribution_tags[7].getText().encode('ascii', 'ignore').decode())
-        user_rating_distribution.append(user_rating_distribution_tags[8].getText().encode('ascii', 'ignore').decode())
-        user_rating_distribution.append(user_rating_distribution_tags[9].getText().encode('ascii', 'ignore').decode())
-        user_rating_distribution.append(user_rating_distribution_tags[10].getText().encode('ascii', 'ignore').decode())
-        self.rating_distribution = user_rating_distribution
-        print(user_rating_distribution[0])
