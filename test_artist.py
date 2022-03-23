@@ -28,6 +28,14 @@ def test_get_artist__mixtapes_json(artist):
     artist_mixtapes_json = pytest.client.artist_mixtapes_json(artist)
     assert artist_mixtapes_json != null
 
+def test_get_artist_eps(artist):
+    artist_eps = pytest.client.artist_eps(artist)
+    assert artist_eps != null
+
+def test_get_artist__eps_json(artist):
+    artist_eps_json = pytest.client.artist_eps_json(artist)
+    assert artist_eps_json != null
+
 if __name__ == "__main__":
     
     artist = '183-kanye-west'
@@ -35,5 +43,6 @@ if __name__ == "__main__":
 
     print( AlbumWrapper.artist_albums(artist) )
     print( AlbumWrapper.artist_mixtapes(artist) )
+    print( AlbumWrapper.artist_eps(artist) )
 
     pytest.main
