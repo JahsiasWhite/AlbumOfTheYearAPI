@@ -1,1 +1,2 @@
 pytest==7.0.1
+SQLAlchemy==1.3.22
