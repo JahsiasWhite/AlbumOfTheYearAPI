@@ -1,17 +1,13 @@
-
 from sqlalchemy import null
-from user import UserMethods
 import pytest
-
-from client import Client
-
+from Client.client import Client
 
 @pytest.fixture
 def user():
     return 'doublez'
 
 @pytest.mark.first
-def test_user_page():
+def test_initialize():
     c = Client()
     pytest.client = c
     assert pytest.client != null
@@ -65,10 +61,8 @@ def test_get_rating_distribtion_json(user):
     print(user_rating_distribution_json)
 
 if __name__ == "__main__":
+    
     user = 'doublez'
-    #test_instance = User()
-    #soup = test_get_user_page(user)
-
     AlbumWrapper = Client()
 
     print( AlbumWrapper.user_ratings(user) )
