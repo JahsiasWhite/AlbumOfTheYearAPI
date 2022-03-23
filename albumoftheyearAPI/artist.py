@@ -61,3 +61,29 @@ class ArtistMethods:
             "mixtapes": self.__get_artist_mixtapes(artist)
         }
         return json.dumps(mixtapes_JSON)
+
+
+
+
+    def __get_artist_eps(self, artist):
+        if self.artist != artist:
+            self.__set_artist_page(artist)
+          
+        eps = self.artist_page.find_all(attrs={"data-type":'ep'})
+
+        artist_eps = []
+        for x in eps:
+            ep = x.getText().encode('ascii', 'ignore').decode()[4:]
+            ep_name = ep.split('Ep')[0]
+            artist_eps.append(ep_name)
+
+        return artist_eps
+
+    def artist_eps(self, artist):
+        return self.__get_artist_eps(artist)
+
+    def artist_eps_json(self, artist):
+        eps_JSON = {
+            "eps": self.__get_artist_eps(artist)
+        }
+        return json.dumps(eps_JSON)
