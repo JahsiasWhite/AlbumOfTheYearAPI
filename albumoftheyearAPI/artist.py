@@ -38,3 +38,26 @@ class ArtistMethods:
             "albums": self.__get_artist_albums(artist)
         }
         return json.dumps(albums_JSON)
+
+    def __get_artist_mixtapes(self, artist):
+        if self.artist != artist:
+            self.__set_artist_page(artist)
+          
+        mixtapes = self.artist_page.find_all(attrs={"data-type":'mixtape'})
+
+        artist_mixtapes = []
+        for x in mixtapes:
+            mixtape = x.getText().encode('ascii', 'ignore').decode()[4:]
+            mixtape_name = mixtape.split('Mixtape')[0]
+            artist_mixtapes.append(mixtape_name)
+
+        return artist_mixtapes
+
+    def artist_mixtapes(self, artist):
+        return self.__get_artist_mixtapes(artist)
+
+    def artist_mixtapes_json(self, artist):
+        mixtapes_JSON = {
+            "mixtapes": self.__get_artist_mixtapes(artist)
+        }
+        return json.dumps(mixtapes_JSON)

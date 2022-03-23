@@ -13,14 +13,20 @@ def test_initialize():
     assert pytest.client != null
 
 def test_get_artist_albums(artist):
-    artist_ratings = pytest.client.artist_albums(artist)
-    assert artist_ratings != null
+    artist_albums = pytest.client.artist_albums(artist)
+    assert artist_albums != null
 
 def test_get_artist__albums_json(artist):
-    artist_ratings_json = pytest.client.artist_albums_json(artist)
-    assert artist_ratings_json != null
+    artist_albums_json = pytest.client.artist_albums_json(artist)
+    assert artist_albums_json != null
 
+def test_get_artist_mixtapes(artist):
+    artist_mixtapes = pytest.client.artist_mixtapes(artist)
+    assert artist_mixtapes != null
 
+def test_get_artist__mixtapes_json(artist):
+    artist_mixtapes_json = pytest.client.artist_mixtapes_json(artist)
+    assert artist_mixtapes_json != null
 
 if __name__ == "__main__":
     
@@ -28,5 +34,6 @@ if __name__ == "__main__":
     AlbumWrapper = AOTY()
 
     print( AlbumWrapper.artist_albums(artist) )
+    print( AlbumWrapper.artist_mixtapes(artist) )
 
     pytest.main
