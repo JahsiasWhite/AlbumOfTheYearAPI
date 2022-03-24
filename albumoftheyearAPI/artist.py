@@ -19,7 +19,6 @@ class ArtistMethods:
     def __class_text(self, id, class_name):
         if self.artist != id:
             self.__set_user_page(id)
-
           
         return self.artist_page.find(class_=class_name).getText()
 

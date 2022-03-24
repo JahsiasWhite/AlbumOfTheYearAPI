@@ -15,7 +15,7 @@ class UserMethods():
         ugly_user_page = urlopen(self.req).read()
         self.user_page = BeautifulSoup(ugly_user_page, 'html.parser')
 
-    def __get_user_ratings(self, user):
+    def __get_user_rating_count(self, user):
         if self.user != user:
             self.__set_user_page(user)
           
@@ -23,16 +23,16 @@ class UserMethods():
         ratings =  ratings_section.find(class_='profileStat').getText()
         return ratings
 
-    def user_ratings(self, user):
-        return self.__get_user_ratings(user)
+    def user_rating_count(self, user):
+        return self.__get_user_rating_count(user)
 
-    def user_ratings_json(self, user):
+    def user_rating_count_json(self, user):
         ratings_JSON = {
-            "ratings": self.__get_user_ratings(user)
+            "ratings": self.__get_user_rating_count(user)
         }
         return json.dumps(ratings_JSON)
 
-    def __get_user_reviews(self, user):
+    def __get_user_review_count(self, user):
         if self.user != user:
             self.__set_user_page(user)
 
@@ -40,16 +40,16 @@ class UserMethods():
         reviews =  reviews_section.find(class_='profileStat').getText()
         return reviews
 
-    def user_reviews(self, user):
+    def user_review_count(self, user):
         return self.__get_user_ratings(user)
     
-    def get_reviews_json(self, user):
+    def get_review_count_json(self, user):
         reviews_JSON = {
-            "reviews": self.__get_user_reviews(user)
+            "reviews": self.__get_user_review_count(user)
         }
         return json.dumps(reviews_JSON)
 
-    def __get_user_lists(self, user):
+    def __get_user_list_count(self, user):
         if self.user != user:
             self.__set_user_page(user)
 
@@ -57,16 +57,16 @@ class UserMethods():
         lists =  lists_section.find(class_='profileStat').getText()
         return lists
 
-    def user_lists(self, user):
-        return self.__get_user_lists(user)
+    def user_list_count(self, user):
+        return self.__get_user_list_count(user)
 
     def user_lists_json(self, user):
         lists_JSON = {
-            "lists": self.__get_user_lists(user)
+            "lists": self.__get_user_list_count(user)
         }
         return json.dumps(lists_JSON)
 
-    def __get_user_followers(self, user):
+    def __get_user_follower_count(self, user):
         if self.user != user:
             self.__set_user_page(user)
 
@@ -74,12 +74,12 @@ class UserMethods():
         followers =  followers_section.find(class_='profileStat').getText()
         return followers
 
-    def user_followers(self, user):
-        return self.__get_user_followers(user)
+    def user_follower_count(self, user):
+        return self.__get_user_follower_count(user)
 
-    def user_followers_json(self, user):
+    def user_follower_count_json(self, user):
         followers_JSON = {
-            "followers": self.__get_user_followers(user)
+            "followers": self.__get_user_follower_count(user)
         }
         return json.dumps(followers_JSON)
 

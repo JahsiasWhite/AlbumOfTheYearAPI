@@ -26,21 +26,17 @@ Here's a quick example of getting a specific users follower count
 from albumoftheyearapi import AOTY
 
 client = AOTY()
-print_num_of_followers('doublez')
+print(client.user_follower_count('jahsias'))
 
-def print_num_of_followers(user):
-    print(client.user_followers(user))
 ```
 
 If you don't need the full functionality, you can also import only the neccesary files
 ```
 from albumoftheyearapi.artist import ArtistMethods
 
-client = ArtistMethods
-print_all_artist_albums('183-kanye-west')
+client = ArtistMethods()
+print(client.artist_albums('183-kanye-west'))
 
-def print_all_artist_albums(artist):
-    print(client.artist_albums(artist))
 ```
 Notice artists also need their unique id along with their name
 
@@ -49,22 +45,22 @@ Notice artists also need their unique id along with their name
 **Artist Methods**
 
 ```artist_albums(artist)```
-<br>Returns all albums by an artist
+<br>Returns a list of all albums by an artist
 <br>    Parameters:  
 * artist - artist id and name
 
 ```artist_mixtapes(artist)```
-<br>Returns all mixtapes by an artist
+<br>Returns a list of all mixtapes by an artist
 <br>Parameters:  
 * artist - artist id and name
 
 ```artist_eps(artist)```
-<br>Returns all eps by an artist
+<br>Returns a list of all eps by an artist
 <br>Parameters:  
 * artist - artist id and name
 
 ```artist_singles(artist)```
-<br>Returns all singles by an artist
+<br>Returns a list of all singles by an artist
 <br>Parameters:  
 * artist - artist id and name
 
@@ -73,24 +69,59 @@ Notice artists also need their unique id along with their name
 <br>Parameters:  
 * artist - artist id and name
 
+```artist_critic_score(artist)```
+<br>Returns the critic score of the artist
+<br>Parameters:  
+* artist - artist id and name
+
+```artist_user_score(artist)```
+<br>Returns the user score of the artist
+<br>Parameters:  
+* artist - artist id and name
+
+```artist_total_score(artist)```
+<br>Returns the average of the critic and users score of the artist
+<br>Parameters:  
+* artist - artist id and name
+
+```artist_follower_count(artist)```
+<br>Returns the follower count of the artist
+<br>Parameters:  
+* artist - artist id and name
+
+```artist_details(artist)```
+<br>Returns the detials of the artist
+<br>Parameters:  
+* artist - artist id and name
+
+```artist_top_songs(artist)```
+<br>Returns a list of the top songs of the artist
+<br>Parameters:  
+* artist - artist id and name
+
+```similar_artists(artist)```
+<br>Returns a list of similar artists to the given artist
+<br>Parameters:  
+* artist - artist id and name
+
 **User Methods**
 
-```user_ratings(user)```
+```user_rating_count(user)```
 <br>Returns the number of ratings by a user
 <br>Parameters:  
 * user - username
 
-```user_reviews(user)```
+```user_review_count(user)```
 <br>Returns the number of reviews by a user
 <br>Parameters:  
 * user - username
 
-```user_lists(user)```
+```user_list_count(user)```
 <br>Returns the number of lists by a user
 <br>Parameters:  
 * user - username
 
-```user_followers(user)```
+```user_follower_count(user)```
 <br>Returns the number of followers a user has
 <br>Parameters:  
 * user - username
