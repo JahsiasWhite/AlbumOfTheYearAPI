@@ -41,7 +41,7 @@ class UserMethods():
         return reviews
 
     def user_review_count(self, user):
-        return self.__get_user_ratings(user)
+        return self.__get_user_review_count(user)
     
     def get_review_count_json(self, user):
         reviews_JSON = {
