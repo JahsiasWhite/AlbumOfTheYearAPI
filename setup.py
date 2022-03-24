@@ -12,7 +12,7 @@ long_description = (this_directory / "README.md").read_text()
 setup(
     name='album-of-the-year-api',
     description='A light weight Python library that acts as an API for the website albumoftheyear.org',
-    version='0.2.1',
+    version='0.2.5',
     license='GNU',
     author="Jahsias White",
     author_email='jahsias.white@gmail.com',

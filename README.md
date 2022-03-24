@@ -1,6 +1,8 @@
 # AlbumOfTheYearWrapper
 
 A light weight python library that acts as an API for https://www.albumoftheyear.org/
+<img alt="PyPI" src="https://img.shields.io/pypi/v/album-of-the-year-api">
+![Tests](https://github.com/JahsiasWhite/AlbumOfTheYearAPI/workflows/Tests/badge.svg?branch=master)
 
 ## Description
 
@@ -27,7 +29,6 @@ from albumoftheyearapi import AOTY
 
 client = AOTY()
 print(client.user_follower_count('jahsias'))
-
 ```
 
 If you don't need the full functionality, you can also import only the neccesary files
@@ -36,7 +37,6 @@ from albumoftheyearapi.artist import ArtistMethods
 
 client = ArtistMethods()
 print(client.artist_albums('183-kanye-west'))
-
 ```
 Notice artists also need their unique id along with their name
 
