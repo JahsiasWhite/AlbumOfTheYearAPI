@@ -5,21 +5,25 @@ A light weight python library that acts as an API for https://www.albumoftheyear
 ## Description
 
 Gets data from https://www.albumoftheyear.org/. The website doesn't currently provide API support so web parsing is required to obtain data. Because of this,
-according to https://www.albumoftheyear.org/robots.txt, searching and POST requests are not allowed. 
+and according to https://www.albumoftheyear.org/robots.txt, searching and POST requests are not allowed. 
 
 ## Installation
 
-## Usage
-```pip install album-of-the-year-api
+```
+pip install album-of-the-year-api
 ```
 or upgrade
-```pip install album-of-the-year-api --upgrade
 ```
+pip install album-of-the-year-api --upgrade
+```
+
+## Usage
 
 **Examples**
 
 Here's a quick example of getting a specific users follower count
-```from albumoftheyearapi import AOTY
+```
+from albumoftheyearapi import AOTY
 
 client = AOTY()
 print_num_of_followers('doublez')
@@ -29,7 +33,8 @@ def print_num_of_followers(user):
 ```
 
 If you don't need the full functionality, you can also import only the neccesary files
-```from albumoftheyearapi.artist import ArtistMethods
+```
+from albumoftheyearapi.artist import ArtistMethods
 
 client = ArtistMethods
 print_all_artist_albums('183-kanye-west')
@@ -39,13 +44,14 @@ def print_all_artist_albums(artist):
 ```
 Notice artists also need their unique id along with their name
 
+## Methods
+
 **Artist Methods**
 
 ```artist_albums(artist)```
 <br>Returns all albums by an artist
 <br>    Parameters:  
 * artist - artist id and name
-
 
 ```artist_mixtapes(artist)```
 <br>Returns all mixtapes by an artist
@@ -54,6 +60,16 @@ Notice artists also need their unique id along with their name
 
 ```artist_eps(artist)```
 <br>Returns all eps by an artist
+<br>Parameters:  
+* artist - artist id and name
+
+```artist_singles(artist)```
+<br>Returns all singles by an artist
+<br>Parameters:  
+* artist - artist id and name
+
+```artist_name(artist)```
+<br>Returns the name of the artist
 <br>Parameters:  
 * artist - artist id and name
 

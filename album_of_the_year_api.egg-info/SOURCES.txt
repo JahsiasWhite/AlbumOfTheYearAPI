@@ -1,0 +1,8 @@
+README.md
+setup.cfg
+setup.py
+album_of_the_year_api.egg-info/PKG-INFO
+album_of_the_year_api.egg-info/SOURCES.txt
+album_of_the_year_api.egg-info/dependency_links.txt
+album_of_the_year_api.egg-info/requires.txt
+album_of_the_year_api.egg-info/top_level.txt

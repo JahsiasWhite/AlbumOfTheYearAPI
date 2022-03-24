@@ -5,14 +5,14 @@ with open("requirements.txt", encoding="utf-8") as f:
 
 # read the contents of your README file
 from pathlib import Path
-this_directory = Path(__file__)
+this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text()
 
 
 setup(
     name='album-of-the-year-api',
     description='A light weight Python library that acts as an API for the website albumoftheyear.org',
-    version='0.2',
+    version='0.2.1',
     license='GNU',
     author="Jahsias White",
     author_email='jahsias.white@gmail.com',
