@@ -24,3 +24,8 @@ jobs:
         with:
           black: true
           flake8: true
+          commit_message: "Fix code style issues with ${linter}"
+          auto_fix: true
+          commit: true
+          github_token: "${{ secrets.GITHUB_TOKEN }}"
+          git_name: "Lint Action"
