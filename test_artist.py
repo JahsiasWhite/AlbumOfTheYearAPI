@@ -134,22 +134,23 @@ def test_get_similar_artists_json(artist):
     similar_artists_json = pytest.client.similar_artists_json(artist)
     assert similar_artists_json != null
 
+
 if __name__ == "__main__":
-    
-    artist = '183-kanye-west'
+
+    artist = "183-kanye-west"
     AlbumWrapper = AOTY()
 
-    print( 'Albums\n', AlbumWrapper.artist_albums(artist), '\n' )
-    print( 'Mixtapes\n', AlbumWrapper.artist_mixtapes(artist), '\n' )
-    print( 'Eps\n', AlbumWrapper.artist_eps(artist), '\n' )
-    print( 'Singles\n', AlbumWrapper.artist_singles(artist), '\n' )
-    print( 'Artist Name\n', AlbumWrapper.artist_name(artist), '\n' )
-    print( 'Critic Score\n', AlbumWrapper.artist_critic_score(artist), '\n' )
-    print( 'User Score\n', AlbumWrapper.artist_user_score(artist), '\n' )
-    print( 'Total Score\n', AlbumWrapper.artist_total_score(artist), '\n' )
-    print( 'Follower Count\n', AlbumWrapper.artist_follower_count(artist), '\n' )
-    print( 'Artist Details\n', AlbumWrapper.artist_details(artist), '\n' )
-    print( 'Top Songs\n', AlbumWrapper.artist_top_songs(artist), '\n' )
-    print( 'Similar Artists\n', AlbumWrapper.similar_artists(artist), '\n' )
+    print("Albums\n", AlbumWrapper.artist_albums(artist), "\n")
+    print("Mixtapes\n", AlbumWrapper.artist_mixtapes(artist), "\n")
+    print("Eps\n", AlbumWrapper.artist_eps(artist), "\n")
+    print("Singles\n", AlbumWrapper.artist_singles(artist), "\n")
+    print("Artist Name\n", AlbumWrapper.artist_name(artist), "\n")
+    print("Critic Score\n", AlbumWrapper.artist_critic_score(artist), "\n")
+    print("User Score\n", AlbumWrapper.artist_user_score(artist), "\n")
+    print("Total Score\n", AlbumWrapper.artist_total_score(artist), "\n")
+    print("Follower Count\n", AlbumWrapper.artist_follower_count(artist), "\n")
+    print("Artist Details\n", AlbumWrapper.artist_details(artist), "\n")
+    print("Top Songs\n", AlbumWrapper.artist_top_songs(artist), "\n")
+    print("Similar Artists\n", AlbumWrapper.similar_artists(artist), "\n")
 
     pytest.main
