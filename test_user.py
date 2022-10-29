@@ -65,13 +65,13 @@ def test_get_about_json(user):
     assert user_about_json != null
 
 
-def test_get_rating_distribtion(user):
-    user_rating_distribution = pytest.client.user_rating_distribtion(user)
+def test_get_rating_distribution(user):
+    user_rating_distribution = pytest.client.user_rating_distribution(user)
     assert user_rating_distribution != null
 
 
-def test_get_rating_distribtion_json(user):
-    user_rating_distribution_json = pytest.client.user_rating_distribtion(user)
+def test_get_rating_distribution_json(user):
+    user_rating_distribution_json = pytest.client.user_rating_distribution(user)
     assert user_rating_distribution_json != null
 
 
