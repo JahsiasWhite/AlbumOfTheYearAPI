@@ -26,3 +26,6 @@ MANIFEST
 # VS Code files for those working on multiple tools
 .vscode/*
 !.vscode/settings.json
+
+# Local History for Visual Studio Code
+.history/
