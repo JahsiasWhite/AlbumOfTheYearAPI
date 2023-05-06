@@ -106,7 +106,6 @@ def test_get_user_liked_music_json(user):
 
 
 if __name__ == "__main__":
-
     user = "doublez"
     AlbumWrapper = AOTY()
 
