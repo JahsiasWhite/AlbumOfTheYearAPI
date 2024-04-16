@@ -136,7 +136,6 @@ def test_get_similar_artists_json(artist):
 
 
 if __name__ == "__main__":
-
     artist = "183-kanye-west"
     AlbumWrapper = AOTY()
 
