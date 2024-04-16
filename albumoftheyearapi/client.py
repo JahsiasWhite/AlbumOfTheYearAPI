@@ -1,4 +1,5 @@
 """ All methods used to get site data """
+
 from albumoftheyearapi.user import UserMethods
 from albumoftheyearapi.artist import ArtistMethods
 
