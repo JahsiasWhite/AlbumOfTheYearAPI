@@ -14,7 +14,7 @@ long_description = (this_directory / "README.md").read_text()
 setuptools.setup(
     name="album-of-the-year-api",
     description="A light weight Python library that acts as an API for the website albumoftheyear.org",
-    version="0.2.6",
+    version="0.2.7",
     license="GNU",
     author="Jahsias White",
     author_email="jahsias.white@gmail.com",

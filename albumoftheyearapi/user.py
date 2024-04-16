@@ -13,7 +13,6 @@ class UserMethods:
         self.url = ""
 
     def __set_user_page(self, user, url):
-        print("Making a request")
         self.user = user
         self.url = url
         self.req = Request(self.url, headers={"User-Agent": "Mozilla/6.0"})
