@@ -2,6 +2,7 @@ import json
 from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
 
+
 class Album:
     def __init__(self, name, artist, date):
         self.name = name
@@ -9,15 +10,12 @@ class Album:
         self.release_date = date
 
     def to_JSON(self):
-        return json.dumps(
-            self,
-            default=lambda o: o.__dict__,
-            sort_keys=True,
-            indent=0)
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=0)
+
 
 class AlbumMethods:
     def __init__(self):
-        self.upcoming_album_class = 'albumBlock five small'
+        self.upcoming_album_class = "albumBlock five small"
         self.aoty_albums_per_page = 60
         self.page_limit = 21
 
@@ -29,7 +27,7 @@ class AlbumMethods:
         upcoming_albums = {}
         albums = []
         counter = total
-        for page_number in range(min_page_number, max_page_number+1):
+        for page_number in range(min_page_number, max_page_number + 1):
             try:
                 if counter < self.aoty_albums_per_page:
                     albums += self._get_upcoming_releases_by_page(page_number)[:counter]
@@ -38,10 +36,13 @@ class AlbumMethods:
                     counter -= self.aoty_albums_per_page
             except Exception as e:
                 return json.dumps(
-                    self._build_error_response('Page Limit Error',
-                                               'Number of albums exceeded page limit. Exception raise: .' + e))
+                    self._build_error_response(
+                        "Page Limit Error",
+                        "Number of albums exceeded page limit. Exception raise: ." + e,
+                    )
+                )
         json_albums = [album.to_JSON() for album in albums]
-        upcoming_albums['albums'] = json_albums
+        upcoming_albums["albums"] = json_albums
         return json.dumps(upcoming_albums)
 
     def upcoming_releases_by_page(self, page_number):
@@ -49,9 +50,13 @@ class AlbumMethods:
         try:
             parsed_albums = self._get_upcoming_releases_by_page(page_number)
         except:
-            return json.dumps(self._build_error_response('Page Limit Error', 'The page number requested is out of range.'))
+            return json.dumps(
+                self._build_error_response(
+                    "Page Limit Error", "The page number requested is out of range."
+                )
+            )
         json_albums = [album.to_JSON() for album in parsed_albums]
-        upcoming_albums['albums'] = json_albums
+        upcoming_albums["albums"] = json_albums
         return json.dumps(upcoming_albums)
 
     def upcoming_releases_by_date(self, month, day):
@@ -59,15 +64,17 @@ class AlbumMethods:
         try:
             parsed_albums = self._get_upcoming_releases_by_date(month, day)
         except Exception as e:
-            return json.dumps(self._build_error_response('Releases by date Error: ', e.message))
+            return json.dumps(
+                self._build_error_response("Releases by date Error: ", e.message)
+            )
         json_albums = [album.to_JSON() for album in parsed_albums]
-        upcoming_albums['albums'] = json_albums
+        upcoming_albums["albums"] = json_albums
         return json.dumps(upcoming_albums)
 
     def _get_upcoming_releases_by_date(self, month, day):
         month_name = self._map_month_number_to_name(month)
-        target_date = (month_name + ' ' + str(day)).strip()
-        next_date = (month_name + ' ' + str(day+1)).strip()
+        target_date = (month_name + " " + str(day)).strip()
+        next_date = (month_name + " " + str(day + 1)).strip()
         page_number = 1
         result_albums = []
 
@@ -83,24 +90,36 @@ class AlbumMethods:
             page_number += 1
         return result_albums
 
-
     def _build_error_response(self, error_type, msg):
-        error_dict = {'error': error_type, 'message': msg}
+        error_dict = {"error": error_type, "message": msg}
         return error_dict
 
     def _map_month_number_to_name(self, month_number):
-        month_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun','Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        month_names = [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+        ]
         try:
-            return month_names[month_number-1]
+            return month_names[month_number - 1]
         except:
-            raise Exception('Invalid month number')
+            raise Exception("Invalid month number")
 
     def _get_upcoming_releases_by_page(self, page_number):
         if page_number > self.page_limit:
-            raise Exception('Page number out of range')
+            raise Exception("Page number out of range")
         if int(page_number) == 1:
-            page_number = ''
-        url = 'https://www.albumoftheyear.org/upcoming/' + str(page_number) + '/'
+            page_number = ""
+        url = "https://www.albumoftheyear.org/upcoming/" + str(page_number) + "/"
         page = self._get_release_page_from_request(url)
         albums = page.find_all("div", {"class": self.upcoming_album_class})
         parsed_albums = self._parse_albums(albums)
