@@ -17,6 +17,6 @@ class AOTY(UserMethods, ArtistMethods, AlbumMethods):
         self.url = ""
         self.user_url = "https://www.albumoftheyear.org/user/"
         self.artist_url = "https://www.albumoftheyear.org/artist/"
-        self.upcoming_album_class = 'albumBlock five small'
+        self.upcoming_album_class = "albumBlock five small"
         self.aoty_albums_per_page = 60
         self.page_limit = 21
