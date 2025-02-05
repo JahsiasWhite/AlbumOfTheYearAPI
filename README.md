@@ -2,7 +2,7 @@
 
 A light weight python library that acts as an API for https://www.albumoftheyear.org/
 <br>
-![Tests](https://github.com/JahsiasWhite/AlbumOfTheYearAPI/workflows/Tests/badge.svg?branch=master)
+![Tests](https://github.com/JahsiasWhite/AlbumOfTheYearAPI/workflows/Tests/badge.svg)
 <img alt="PyPI" src="https://img.shields.io/pypi/v/album-of-the-year-api">
 
 ## Description
