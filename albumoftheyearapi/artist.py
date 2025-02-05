@@ -10,6 +10,8 @@ class ArtistMethods:
         self.artist = ""
         self.url = ""
         self.artist_url = "https://www.albumoftheyear.org/artist/"
+        
+        self.albums = []
 
     def __set_artist_page(self, artist, url):
         print("Getting Artist Info")
@@ -18,27 +20,83 @@ class ArtistMethods:
         self.req = Request(self.url, headers={"User-Agent": "Mozilla/6.0"})
         ugly_artist_page = urlopen(self.req).read()
         self.artist_page = BeautifulSoup(ugly_artist_page, "html.parser")
+        self.__get_discography(artist)
+        self.__get_community_data(artist)
 
     def __class_text(self, artist, class_name, url):
         if self.url != url:
             self.__set_artist_page(artist, url)
 
         return self.artist_page.find(class_=class_name).getText()
+    
+    def __get_discography(self, artist):
+        url = self.artist_url + artist + "/"
+        if self.url != url:
+            self.__set_artist_page(artist, url)
+
+        # Dictionary to store albums under their respective categories
+        categorized_albums = {}
+
+        # Find all h2 and div elements inside the artist page
+        elements = self.artist_page.find_all(["h2", "div"])
+        current_category = None  # To track which category the divs belong to
+
+        for element in elements:
+            if element.name == "h2":
+                # New category found, update current_category
+                current_category = element.get_text(strip=True)
+                categorized_albums[current_category] = []  # Initialize list for this category
+            elif element.name == "div" and current_category == "Similar Artists":
+                # Similar Artists is structured differently
+                album_title_div = element.find("div", class_="name")
+                if album_title_div:
+                    album_name = album_title_div.get_text().encode("ascii", "ignore").decode().strip()
+                    categorized_albums[current_category].append(album_name)
+            elif element.name == "div" and current_category:
+                # For each category, loop through all divs to find the album title
+                album_title_div = element.find("div", class_="albumTitle")
+                if album_title_div:
+                    album_name = album_title_div.get_text().encode("ascii", "ignore").decode().strip()
+                    categorized_albums[current_category].append(album_name)
+                
+        self.albums = categorized_albums['Albums']
+        self.mixtapes = categorized_albums['Mixtapes']
+        self.eps = categorized_albums['EPs']
+        # self.live_albums = categorized_albums['Live Albums'] # UNUSED
+        # self.compilations = categorized_albums['Compilations'] # UNUSED
+        self.singles = categorized_albums['SinglesView All']
+        # self.appears_on = categorized_albums['Appears OnView All'] # UNUSED
+        self.similar_artists_cat = categorized_albums['Similar Artists']
+
+    def __get_community_data(self, artist):
+        url = self.artist_url + artist + "/"
+        if self.url != url:
+            self.__set_artist_page(artist, url)
+
+        # Find all <tr> elements
+        rows = self.artist_page.find_all("tr")
+
+        extracted_texts = []  # Store extracted text from <a> elements
+
+        for row in rows:
+            # Find the div with class "songAlbum" inside this row
+            song_album_div = row.find("td", class_="songAlbum")
+        
+            if song_album_div:
+                # Find the <a> tag inside this div
+                link = song_album_div.find("a")
+                if link:
+                    text = link.get_text().strip()
+                    extracted_texts.append(text)
+
+        self.top_songs = extracted_texts
 
     def artist_albums(self, artist):
         url = self.artist_url + artist + "/"
         if self.url != url:
             self.__set_artist_page(artist, url)
-
-        albums = self.artist_page.find_all(attrs={"data-type": "lp"})
-
-        artist_albums = []
-        for x in albums:
-            album = x.getText().encode("ascii", "ignore").decode()[4:]
-            album_name = album.split("LP")[0]
-            artist_albums.append(album_name)
-
-        return artist_albums
+            
+        return self.albums
 
     def artist_albums_json(self, artist):
         albums_JSON = {"albums": self.artist_albums(artist)}
@@ -48,16 +106,8 @@ class ArtistMethods:
         url = self.artist_url + artist + "/"
         if self.url != url:
             self.__set_artist_page(artist, url)
-
-        mixtapes = self.artist_page.find_all(attrs={"data-type": "mixtape"})
-
-        artist_mixtapes = []
-        for x in mixtapes:
-            mixtape = x.getText().encode("ascii", "ignore").decode()[4:]
-            mixtape_name = mixtape.split("Mixtape")[0]
-            artist_mixtapes.append(mixtape_name)
-
-        return artist_mixtapes
+            
+        return self.mixtapes
 
     def artist_mixtapes_json(self, artist):
         mixtapes_JSON = {"mixtapes": self.artist_mixtapes(artist)}
@@ -67,16 +117,8 @@ class ArtistMethods:
         url = self.artist_url + artist + "/"
         if self.url != url:
             self.__set_artist_page(artist, url)
-
-        eps = self.artist_page.find_all(attrs={"data-type": "ep"})
-
-        artist_eps = []
-        for x in eps:
-            ep = x.getText().encode("ascii", "ignore").decode()[4:]
-            ep_name = ep.split("EP")[0]
-            artist_eps.append(ep_name)
-
-        return artist_eps
+            
+        return self.eps
 
     def artist_eps_json(self, artist):
         eps_JSON = {"eps": self.artist_eps(artist)}
@@ -86,15 +128,8 @@ class ArtistMethods:
         url = self.artist_url + artist + "/"
         if self.url != url:
             self.__set_artist_page(artist, url)
-        singles = self.artist_page.find_all(attrs={"data-type": "single"})
-
-        artist_singles = []
-        for x in singles:
-            single = x.getText().encode("ascii", "ignore").decode()[4:]
-            single_name = single.split("Single")[0]
-            artist_singles.append(single_name)
-
-        return artist_singles
+        
+        return self.singles
 
     def artist_singles_json(self, artist):
         singles_JSON = {"singles": self.artist_singles(artist)}
@@ -153,18 +188,22 @@ class ArtistMethods:
         return json.dumps(artist_details_JSON)
 
     def artist_top_songs(self, artist):
-        return self.__class_text(
-            artist, "trackListTable", self.artist_url + artist + "/"
-        )
+        url = self.artist_url + artist + "/"
+        if self.url != url:
+            self.__set_artist_page(artist, url)
+            
+        return self.top_songs
 
     def artist_top_songs_json(self, artist):
         artist_top_songs_JSON = {"top songs": self.artist_top_songs(artist)}
         return json.dumps(artist_top_songs_JSON)
 
     def similar_artists(self, artist):
-        return self.__class_text(
-            artist, "section relatedArtists", self.artist_url + artist + "/"
-        )
+        url = self.artist_url + artist + "/"
+        if self.url != url:
+            self.__set_artist_page(artist, url)
+            
+        return self.similar_artists_cat
 
     def similar_artists_json(self, artist):
         similar_artists_JSON = {"similar artists": self.similar_artists(artist)}
