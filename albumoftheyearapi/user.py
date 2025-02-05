@@ -11,6 +11,7 @@ class UserMethods:
     def __init__(self):
         self.user = ""
         self.url = ""
+        self.user_url = "https://www.albumoftheyear.org/user/"
 
     def __set_user_page(self, user, url):
         self.user = user

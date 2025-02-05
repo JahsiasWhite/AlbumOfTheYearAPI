@@ -1,7 +1,7 @@
 from sqlalchemy import null
 import pytest
 from albumoftheyearapi import AOTY
-
+from albumoftheyearapi.user import UserMethods
 
 @pytest.fixture
 def user():
@@ -104,6 +104,10 @@ def test_get_user_liked_music_json(user):
     liked_music_json = pytest.client.user_liked_music(user)
     assert liked_music_json != null
 
+def test_functions_without_wrapper(user):
+    # Test single function wihout main wrapper
+    client = UserMethods()
+    print(client.user_rating_count(user))
 
 if __name__ == "__main__":
     user = "doublez"

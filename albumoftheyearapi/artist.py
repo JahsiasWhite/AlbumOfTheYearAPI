@@ -9,6 +9,7 @@ class ArtistMethods:
     def __init__(self):
         self.artist = ""
         self.url = ""
+        self.artist_url = "https://www.albumoftheyear.org/artist/"
 
     def __set_artist_page(self, artist, url):
         print("Getting Artist Info")
@@ -20,7 +21,7 @@ class ArtistMethods:
 
     def __class_text(self, artist, class_name, url):
         if self.url != url:
-            self.__set_user_page(artist, url)
+            self.__set_artist_page(artist, url)
 
         return self.artist_page.find(class_=class_name).getText()
 

@@ -1,7 +1,7 @@
 from sqlalchemy import null
 import pytest
 from albumoftheyearapi import AOTY
-
+from albumoftheyearapi.artist import ArtistMethods
 
 @pytest.fixture
 def artist():
@@ -133,6 +133,11 @@ def test_get_similar_artists(artist):
 def test_get_similar_artists_json(artist):
     similar_artists_json = pytest.client.similar_artists_json(artist)
     assert similar_artists_json != null
+    
+def test_functions_without_wrapper(artist):
+    # Test single function wihout main wrapper
+    client = ArtistMethods()
+    print(client.artist_albums(artist))
 
 
 if __name__ == "__main__":
