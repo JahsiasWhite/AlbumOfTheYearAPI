@@ -14,7 +14,6 @@ class ArtistMethods:
         self.albums = []
 
     def __set_artist_page(self, artist, url):
-        print("Getting Artist Info")
         self.artist = artist
         self.url = url
         self.req = Request(self.url, headers={"User-Agent": "Mozilla/6.0"})
