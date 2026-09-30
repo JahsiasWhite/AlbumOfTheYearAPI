@@ -1,6 +1,8 @@
+import datetime
 import json
-from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
+
+from albumoftheyearapi.http import fetch_html
 
 
 class Album:
@@ -65,28 +67,53 @@ class AlbumMethods:
             parsed_albums = self._get_upcoming_releases_by_date(month, day)
         except Exception as e:
             return json.dumps(
-                self._build_error_response("Releases by date Error: ", e.message)
+                self._build_error_response("Releases by date Error: ", str(e))
             )
         json_albums = [album.to_JSON() for album in parsed_albums]
         upcoming_albums["albums"] = json_albums
         return json.dumps(upcoming_albums)
 
     def _get_upcoming_releases_by_date(self, month, day):
-        month_name = self._map_month_number_to_name(month)
-        target_date = (month_name + " " + str(day)).strip()
-        next_date = (month_name + " " + str(day + 1)).strip()
+        # Build labels with real calendar arithmetic so month boundaries work
+        # (e.g. Sep 30 -> next label is "Oct 1", not "Sep 31").
+        today = datetime.date.today()
+        try:
+            target = datetime.date(today.year, month, day)
+        except ValueError as exc:
+            raise Exception("Invalid date") from exc
+        if target < today:
+            try:
+                target = datetime.date(today.year + 1, month, day)
+            except ValueError as exc:
+                raise Exception("Invalid date") from exc
+
+        next_day = target + datetime.timedelta(days=1)
+        target_date = (
+            self._map_month_number_to_name(target.month) + " " + str(target.day)
+        ).strip()
+        next_date = (
+            self._map_month_number_to_name(next_day.month) + " " + str(next_day.day)
+        ).strip()
+
         page_number = 1
         result_albums = []
 
-        complete = False
-        while not complete:
-            albums = self._get_upcoming_releases_by_page(page_number)
+        while page_number <= self.page_limit:
+            try:
+                albums = self._get_upcoming_releases_by_page(page_number)
+            except Exception:
+                break
+            if not albums:
+                break
+
+            reached_next_day = False
             for album in albums:
                 if album.release_date == target_date:
                     result_albums.append(album)
-
                 if album.release_date == next_date:
-                    complete = True
+                    reached_next_day = True
+            if reached_next_day:
+                break
             page_number += 1
         return result_albums
 
@@ -126,8 +153,7 @@ class AlbumMethods:
         return parsed_albums
 
     def _get_release_page_from_request(self, url):
-        request = Request(url, headers={"User-Agent": "Mozilla/6.0"})
-        unparsed_page = urlopen(request).read()
+        unparsed_page = fetch_html(url)
         release_page = BeautifulSoup(unparsed_page, "html.parser")
         return release_page
 

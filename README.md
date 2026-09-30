@@ -10,6 +10,44 @@ A light weight python library that acts as an API for https://www.albumoftheyear
 Gets data from https://www.albumoftheyear.org/. The website doesn't currently provide API support so web parsing is required to obtain data. Because of this,
 and according to https://www.albumoftheyear.org/robots.txt, searching and POST requests are not allowed.
 
+## Cloudflare / browser cookies
+
+albumoftheyear.org sits behind Cloudflare bot protection. Automated requests often
+receive a `403` "Just a moment..." challenge. When that happens, this library raises
+`CloudflareBlockedError`.
+
+To get through with a browser session you need:
+
+1. **`curl_cffi`** (pulled in via `requirements.txt`) — Cloudflare checks TLS fingerprint;
+   plain `urllib`/`requests` will still fail even with valid cookies.
+2. Browser **cookies** (especially `cf_clearance`) from a session that already passed the check.
+3. The **same User-Agent** as that browser.
+
+```python
+from albumoftheyearapi import AOTY
+
+client = AOTY(
+    cookies="cf_clearance=...; PHPSESSID=...",  # full Cookie header from DevTools Network
+    user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+               "(KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+)
+print(client.artist_name("183-kanye-west"))
+```
+
+Or set env vars:
+
+```
+AOTY_COOKIES=cf_clearance=...; PHPSESSID=...
+AOTY_USER_AGENT=Mozilla/5.0 ...
+```
+
+Copy the Cookie header from DevTools → Network → the document request (not the
+challenge POST). Cookies expire; refresh them when requests fail again.
+
+The client also spaces requests (`AOTY_MIN_REQUEST_INTERVAL`, default 0.75s) and
+retries HTTP 429 with backoff (`AOTY_MAX_RETRIES`, default 5). Live pytest
+integration tests skip automatically when Cloudflare is blocking.
+
 ## Installation
 
 ```

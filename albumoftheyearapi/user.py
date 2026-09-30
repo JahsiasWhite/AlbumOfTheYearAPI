@@ -1,6 +1,7 @@
-from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
 import json
+
+from albumoftheyearapi.http import fetch_html
 
 
 class UserMethods:
@@ -16,8 +17,7 @@ class UserMethods:
     def __set_user_page(self, user, url):
         self.user = user
         self.url = url
-        self.req = Request(self.url, headers={"User-Agent": "Mozilla/6.0"})
-        ugly_user_page = urlopen(self.req).read()
+        ugly_user_page = fetch_html(self.url)
         self.user_page = BeautifulSoup(ugly_user_page, "html.parser")
 
     def user_rating_count(self, user):

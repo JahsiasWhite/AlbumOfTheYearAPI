@@ -1,4 +1,3 @@
-from sqlalchemy import null
 from albumoftheyearapi import AOTY, album
 import pytest, json, datetime
 
@@ -7,7 +6,7 @@ import pytest, json, datetime
 def test_initialize():
     c = AOTY()
     pytest.client = c
-    assert pytest.client != null
+    assert pytest.client != None
 
 
 def test_upcoming_albums_limit():

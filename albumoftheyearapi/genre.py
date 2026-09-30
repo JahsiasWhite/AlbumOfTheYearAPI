@@ -2,8 +2,9 @@
 
 import json
 import datetime
-from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
+
+from albumoftheyearapi.http import fetch_html
 
 
 # Maps friendly genre names to their URL slugs.
@@ -36,8 +37,7 @@ class GenreMethods:
 
     def __set_genre_page(self, url):
         self.genre_page_url = url
-        req = Request(url, headers={"User-Agent": "Mozilla/6.0"})
-        ugly_page = urlopen(req).read()
+        ugly_page = fetch_html(url)
         self.genre_page = BeautifulSoup(ugly_page, "html.parser")
 
     def __ensure_genre_page(self, url):

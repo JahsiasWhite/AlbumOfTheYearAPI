@@ -1,6 +1,7 @@
 import json
-from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
+
+from albumoftheyearapi.http import fetch_html
 
 
 class ArtistMethods:
@@ -16,8 +17,7 @@ class ArtistMethods:
     def __set_artist_page(self, artist, url):
         self.artist = artist
         self.url = url
-        self.req = Request(self.url, headers={"User-Agent": "Mozilla/6.0"})
-        ugly_artist_page = urlopen(self.req).read()
+        ugly_artist_page = fetch_html(self.url)
         self.artist_page = BeautifulSoup(ugly_artist_page, "html.parser")
         self.__get_discography(artist)
         self.__get_community_data(artist)

@@ -25,7 +25,11 @@ MANIFEST
 
 # VS Code files for those working on multiple tools
 .vscode/*
-!.vscode/settings.json
+# !.vscode/settings.json
 
 # Local History for Visual Studio Code
 .history/
+
+# Local Cloudflare session for live tests (never commit)
+.env
+.env.local

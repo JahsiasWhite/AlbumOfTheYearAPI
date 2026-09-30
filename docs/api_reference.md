@@ -2,10 +2,41 @@
 
 ## Table of Contents
 
+- [Client / Cloudflare](#client--cloudflare)
 - [Artist Methods](#artist-methods)
 - [Album Methods](#album-methods)
 - [User Methods](#user-methods)
 - [Genre Methods](#genre-methods)
+- [Ratings Methods](#ratings-methods)
+
+## Client / Cloudflare
+
+`AOTY(cookies=None, user_agent=None)`
+<br>Main client. Optional browser session values are needed when albumoftheyear.org
+serves a Cloudflare challenge.
+<br>Parameters:
+
+- cookies - Cookie header string or `{name: value}` dict (include `cf_clearance`)
+- user_agent - must match the browser that obtained those cookies
+
+`AOTY.set_cookies(cookies=None, user_agent=None, replace=True)`
+<br>Update cookies / User-Agent after construction.
+
+`AOTY.clear_cookies()`
+<br>Clear session cookies for this process.
+
+`CloudflareBlockedError`
+<br>Raised when a fetch hits a Cloudflare bot challenge. Also available from
+`albumoftheyearapi`.
+
+Environment variables (optional alternative to constructor args):
+
+- `AOTY_COOKIES`
+- `AOTY_USER_AGENT`
+- `AOTY_MIN_REQUEST_INTERVAL` (default `0.75`)
+- `AOTY_MAX_RETRIES` (default `5`)
+
+Requires `curl_cffi` at runtime so TLS fingerprinting matches a real browser.
 
 ## Artist Methods
 
@@ -233,7 +264,31 @@ Parameters:
 - genre (str): Friendly name (e.g. `"rock"`) or raw URL slug (e.g. `"7-rock"`). See shorthands below.
 - year (str or int, optional): Year, decade, `"all"`, or `None` for the current year.
 
-### Genre shorthands
+## Ratings Methods
+
+`top_albums_by_year(year=None)`
+<br>Returns the highest critic-rated albums for a given year, decade, or all time.
+<br>Each album in the list is a dict with the following keys:
+
+- `rank` (str) — chart position, e.g. `"1"`
+- `name` (str) — `"Artist - Album"` as shown on the site
+- `date` (str) — release date, e.g. `"February 13, 2026"`
+- `score` (int or None) — critic score, e.g. `87`
+- `review_count` (int or None) — number of critic reviews, e.g. `11`
+
+Parameters:
+
+- year (int or str, optional): A 4-digit year (e.g. `2026`), a decade (e.g. `"2020s"`), `"all"` for all-time rankings, or `None` to use the current calendar year.
+
+`top_albums_by_year_json(year=None)`
+<br>Returns the same data as `top_albums_by_year` serialised as a JSON string, under the key `"albums"`.
+<br>Parameters:
+
+- year (int or str, optional): Same as `top_albums_by_year`.
+
+---
+
+### Genre Map
 
 | Friendly name  | URL slug         |
 | -------------- | ---------------- |

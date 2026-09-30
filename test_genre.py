@@ -3,7 +3,6 @@
 import json
 
 import pytest
-from sqlalchemy import null
 
 from albumoftheyearapi import AOTY
 from albumoftheyearapi.genre import GenreMethods, GENRE_MAP
@@ -17,7 +16,7 @@ YEAR = 2024
 def test_initialize():
     c = AOTY()
     pytest.client = c
-    assert pytest.client != null
+    assert pytest.client != None
 
 
 # --- genre_albums ---
